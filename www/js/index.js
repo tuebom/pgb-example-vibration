@@ -40,6 +40,8 @@ var app = {
         var parentElement = document.getElementById(id);
         var listeningElement = parentElement.querySelector('.listening');
         var receivedElement = parentElement.querySelector('.received');
+        
+        document.querySelector("#playMp3").addEventListener("touchend", playMP3, false);
 
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');
@@ -49,5 +51,20 @@ var app = {
 
     vibrate: function() {
       navigator.notification.vibrate( 1000 );
+    },
+    playMP3: function() {
+        var mp3URL = getMediaURL("sounds/message.mp3");
+        var media = new Media(mp3URL, null, mediaError);
+        media.play();
+    },
+
+    getMediaURL: function(s) {
+        if(device.platform.toLowerCase() === "android") return "/android_asset/www/" + s;
+        return s;
+    },
+
+    mediaError: function(e) {
+        alert('Media Error');
+        alert(JSON.stringify(e));
     }
 };
